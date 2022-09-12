@@ -1,0 +1,95 @@
+.comment-box {
+  width: 92%;
+  padding: 1rem;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  background-color: $white;
+  gap: 1.5rem;
+  
+  // Header styles
+  &-headers {
+    grid-column: 1/10;
+    grid-row: 1/2;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  &__profile-img {
+    width: 3rem;
+  }
+  &__name {
+    font-size: 1.2rem;
+  }
+  &__post-date {
+    font-size: 1.2rem;
+  }
+  
+
+  // Comment Text
+  &-comment{
+    grid-column: 1/-1;
+    grid-row: 2/4;
+    &__text{
+      font-size: 1.2rem;
+      font-weight: $fontWeightLight;
+      line-height: 18px;
+    }
+  }
+  
+  // Likes box
+  &-likes {
+    padding: 8px;
+    grid-column: 1/5;
+    grid-row: 4/6;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    width: 100%;
+    background-color: $veryLightGray;
+  }
+  &__plus,&__minus {
+    width: 33%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__plus {
+    &-icon {
+    }
+  }
+  &__like-quantity {
+    color: $moderateBlue;
+    font-weight: $fontWeightMedium;
+    font-size: 1.2rem;
+  }
+  &__minus {
+    &-icon {
+    }
+  }
+  
+  
+  // Reply Styles
+  &-reply {
+    grid-column: 10/-1;
+    grid-row: 4/6;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+    &__icon {
+      width: .9rem;
+    }
+    &__text {
+      color: $moderateBlue;
+      font-weight: $fontWeightMedium;
+      font-size: 1.2rem;
+    }
+  }
+}
