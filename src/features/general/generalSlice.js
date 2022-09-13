@@ -4,9 +4,9 @@ import commentData from "../../data.json";
 // console.log(commentData)
 
 const initialState = {
-  user: commentData.currentUser,
+  currentUser: commentData.currentUser,
   comments: commentData.comments,
-  isReply: false,
+  isReplyActive: false,
   isUserReply: false,
 };
 
@@ -14,25 +14,39 @@ const generalSlice = createSlice({
   name: "general",
   initialState,
   reducers: {
-    addNewComment: (state,{payload}) => {
-      state.comments = [...state.comments, payload]
+    addNewComment: (state, { payload }) => {
+      state.comments = [...state.comments, payload];
     },
-    changeCommentScore: (state, {payload}) => {
-      const selectedComment = state.comments.find(com => com.id === payload.id)
+    addReply: (state, { payload }) => {
+      const { replyInfo, id } = payload;
+      console.log(replyInfo);
+      console.log(id); // WAS HERE
+    },
+    changeCommentScore: (state, { payload }) => {
+      const selectedComment = state.comments.find(
+        (com) => com.id === payload.id
+      );
       if (payload.changeType === "inc") {
         selectedComment.score++;
       }
       if (payload.changeType === "dec") {
-        selectedComment.score--
+        selectedComment.score--;
       }
-      if (selectedComment.score < 0){
-        selectedComment.score = 0
+      if (selectedComment.score < 0) {
+        selectedComment.score = 0;
       }
+    },
+    toggleIsReplyActive: (state, { payload }) => {
+      state.isReplyActive = !state.isReplyActive;
     },
   },
 });
 
+export const {
+  addNewComment,
+  changeCommentScore,
+  toggleIsReplyActive,
+  addReply,
+} = generalSlice.actions;
 
-export const {addNewComment, changeCommentScore} = generalSlice.actions
-
-export default generalSlice.reducer
+export default generalSlice.reducer;

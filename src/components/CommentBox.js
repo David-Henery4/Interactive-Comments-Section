@@ -1,16 +1,37 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import {changeCommentScore} from "../features/general/generalSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeCommentScore,
+  toggleIsReplyActive,
+} from "../features/general/generalSlice";
+import InputBox from "./InputBox";
 import holderProfilePic from "../images/avatars/image-amyrobson.png";
 import { del, edit, minus, plus, reply } from "../images";
 
 const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
-  const dispatch = useDispatch()
-  const {image, username} = user
+  const [activeComment, setActiveComment] = useState(false);
+  const { currentUser, isReplyActive, comments } = useSelector(
+    (store) => store.general
+  );
+  const dispatch = useDispatch();
+  const { image, username } = user;
   //
   const handleCommentVotes = (changeType) => {
-    dispatch(changeCommentScore({id,changeType}))
-  }
+    dispatch(changeCommentScore({ id, changeType }));
+  };
+  const checkForActiveComment = (id) => {
+    const currentCommentUser = comments.find(c => c.id === id)
+    if(currentCommentUser.id === id){
+      setActiveComment(!activeComment);
+    }
+    if(currentCommentUser.id !== id){
+      setActiveComment(false)
+    }
+  };
+  //
+  // useEffect(() => {
+    
+  // }, [])
   //
   return (
     <>
@@ -42,7 +63,13 @@ const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
             <img src={minus} alt="minus" className="comment-box__minus-icon" />
           </button>
         </div>
-        <div className="comment-box-reply">
+        <div
+          className="comment-box-reply"
+          onClick={() => {
+            dispatch(toggleIsReplyActive())
+            checkForActiveComment(id)
+          }}
+        >
           <img
             src={reply}
             alt="reply-icon"
@@ -51,6 +78,8 @@ const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
           <p className="comment-box-reply__text">Reply</p>
         </div>
       </div>
+      {/* MIGHT NOT NEED ISREPLYACTIVE, JUST ON ID */}
+      {activeComment && isReplyActive && <InputBox {...currentUser} name={"REPLY"} id={id}/>}
       {/* {replies && replies.length > 0 &&
         replies.map((rep) => {
           return <CommentBox key={rep.id} {...rep}/>;

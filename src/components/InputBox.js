@@ -1,26 +1,46 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {addNewComment} from "../features/general/generalSlice"
+import {addNewComment, toggleIsReplyActive, addReply} from "../features/general/generalSlice"
 import user from "../images/avatars/image-juliusomo.png";
 
-const InputBox = ({image, username}) => {
-  const {comments} = useSelector(store => store.general)
+const InputBox = ({image, username, name, id}) => {
+  const { comments, isReplyActive } = useSelector((store) => store.general);
   const dispatch = useDispatch()
   const [commentValue,setCommentValue] = useState("")
   //
   const handleInputedComment = (com) => {
-    const commentInfo = {
-      id: comments.length + 1,
-      content: com,
-      createdAt: "today", // placeholder
-      score: 0,
-      user: {
-        image,
-        username,
-      },
-      replies: [],
-    };
-    dispatch(addNewComment(commentInfo));
+    if (!isReplyActive){
+      const commentInfo = {
+        id: comments.length + 1,
+        content: com,
+        createdAt: "today", // placeholder
+        score: 0,
+        user: {
+          image,
+          username,
+        },
+        replies: [],
+      };
+      dispatch(addNewComment(commentInfo));
+    }
+  }
+  //
+  const handleReply = (com) => {
+    if (isReplyActive){
+      const currentCommentInfo = comments.find(c => c.id === id)
+      const replyInfo = {
+        id: currentCommentInfo.replies.length,
+        content: com,
+        createdAt: "today", // placeholder
+        score: 0,
+        replyingTo: currentCommentInfo.user.username,
+        user: {
+          image,
+          username,
+        },
+      };
+      dispatch(addReply({replyInfo, id}))
+    }
   }
   //
   return (
@@ -47,10 +67,11 @@ const InputBox = ({image, username}) => {
         className="input-box__btn"
         onClick={() => {
           handleInputedComment(commentValue);
+          handleReply(commentValue);
           setCommentValue("");
         }}
       >
-        SEND
+        {name}
       </button>
     </section>
   );
