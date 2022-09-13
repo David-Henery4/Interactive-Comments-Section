@@ -1,10 +1,17 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import {changeCommentScore} from "../features/general/generalSlice";
 import holderProfilePic from "../images/avatars/image-amyrobson.png";
 import { del, edit, minus, plus, reply } from "../images";
 
-const CommentBox = ({ id, content, createdAt, replies, score, user }, replyStatus) => {
+const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
+  const dispatch = useDispatch()
   const {image, username} = user
-  console.log(replyStatus)
+  //
+  const handleCommentVotes = (changeType) => {
+    dispatch(changeCommentScore({id,changeType}))
+  }
+  //
   return (
     <>
       <div className="comment-box">
@@ -21,11 +28,17 @@ const CommentBox = ({ id, content, createdAt, replies, score, user }, replyStatu
           <p className="comment-box-comment__text">{content}</p>
         </div>
         <div className="comment-box-likes">
-          <button className="comment-box__plus">
+          <button
+            className="comment-box__plus"
+            onClick={() => handleCommentVotes("inc")}
+          >
             <img className="comment-box__plus-icon" src={plus} alt="plus" />
           </button>
           <p className="comment-box__like-quantity">{score}</p>
-          <button className="comment-box__minus">
+          <button
+            className="comment-box__minus"
+            onClick={() => handleCommentVotes("dec")}
+          >
             <img src={minus} alt="minus" className="comment-box__minus-icon" />
           </button>
         </div>

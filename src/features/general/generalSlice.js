@@ -14,8 +14,25 @@ const generalSlice = createSlice({
   name: "general",
   initialState,
   reducers: {
-    
+    addNewComment: (state,{payload}) => {
+      state.comments = [...state.comments, payload]
+    },
+    changeCommentScore: (state, {payload}) => {
+      const selectedComment = state.comments.find(com => com.id === payload.id)
+      if (payload.changeType === "inc") {
+        selectedComment.score++;
+      }
+      if (payload.changeType === "dec") {
+        selectedComment.score--
+      }
+      if (selectedComment.score < 0){
+        selectedComment.score = 0
+      }
+    },
   },
 });
+
+
+export const {addNewComment, changeCommentScore} = generalSlice.actions
 
 export default generalSlice.reducer
