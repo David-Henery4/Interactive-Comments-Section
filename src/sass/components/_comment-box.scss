@@ -40,7 +40,7 @@
   
   // Likes box
   &-likes {
-    padding: 8px;
+    padding: 10px;
     grid-column: 1/5;
     grid-row: 4/6;
     border-radius: 8px;
@@ -48,7 +48,7 @@
     justify-content: center;
     align-items: center;
     gap: .5rem;
-    width: 100%;
+    width: 90%;
     background-color: $veryLightGray;
   }
   &__plus,&__minus {
