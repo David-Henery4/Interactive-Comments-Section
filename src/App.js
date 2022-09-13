@@ -1,12 +1,11 @@
-import { CommentBox, InputBox } from "./components";
+import MainContent from "./layout/MainContent";
+import amy from "./images/avatars/image-amyrobson.png"
+
 
 function App() {
   return (
     <div className="App app-layout">
-      <main className="content-layout">
-        <CommentBox />
-        <InputBox />
-      </main>
+      <MainContent />
     </div>
   );
 }
