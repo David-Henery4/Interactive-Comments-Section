@@ -17,6 +17,16 @@ const generalSlice = createSlice({
     addNewComment: (state, { payload }) => {
       state.comments = [...state.comments, payload];
     },
+    deleteComment: (state, {payload}) => {
+      const filteredComments = state.comments.filter(com => com.id !== payload)
+      console.log(filteredComments)
+      state.comments = filteredComments
+    },
+    editComment: (state, {payload}) => {
+      const {id, editContent} = payload
+      const editedComment = state.comments.find(com => com.id === id)
+      editedComment.content = editContent
+    },
     addReply: (state, { payload }) => {
       const { replyInfo, id } = payload;
       const replyedToComment = state.comments.find((c) => c.id === id)
@@ -63,6 +73,8 @@ export const {
   toggleIsReplyActive,
   addReply,
   currActiveComment,
+  deleteComment,
+  editComment
 } = generalSlice.actions;
 
 export default generalSlice.reducer;

@@ -19,6 +19,7 @@ const InputBox = ({image, username, name, id}) => {
           image,
           username,
         },
+        isUserComment: true,
         replies: [],
       };
       dispatch(addNewComment(commentInfo));
@@ -38,6 +39,8 @@ const InputBox = ({image, username, name, id}) => {
           image,
           username,
         },
+        isUserComment: true,
+        isAReply: true,
       };
       dispatch(addReply({replyInfo, id}))
     }
@@ -46,7 +49,7 @@ const InputBox = ({image, username, name, id}) => {
   const handleReplyToUsername = () => {
     if (isReplyActive){
       const currentCommentInfo = comments.find((c) => c.id === id);
-      console.log(currentCommentInfo)
+      // console.log(currentCommentInfo)
       if (currentCommentInfo){
         setCommentValue(`@${currentCommentInfo.user.username} `);
       }

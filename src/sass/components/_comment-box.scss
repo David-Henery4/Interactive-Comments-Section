@@ -25,7 +25,12 @@
   &__post-date {
     font-size: 1.2rem;
   }
-  
+  &-user-tag{
+    padding: 2px 7px;
+    border-radius: 2px;
+    background-color: $moderateBlue;
+    color: $white;
+  }
 
   // Comment Text
   &-comment{
@@ -91,5 +96,29 @@
       font-weight: $fontWeightMedium;
       font-size: 1.2rem;
     }
+  }
+
+  // DELETE & EDIT STYLES
+  &-delEdit{
+    grid-column: 8/-1;
+    grid-row: 4/6;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.1rem;
+  }
+  &-delete, &-edit{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1.1rem;
+    font-weight: $fontWeightMedium;
+  }
+  &-delete{
+    color: $softRed;
+  }
+  &-edit{
+    color: $moderateBlue;
   }
 }
