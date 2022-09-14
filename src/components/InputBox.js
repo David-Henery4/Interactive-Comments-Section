@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {addNewComment, toggleIsReplyActive, addReply, currActiveComment} from "../features/general/generalSlice"
+import {
+  addNewComment,
+  toggleIsReplyActive,
+  addReply,
+  currActiveComment,
+} from "../features/general/generalSlice";
 import user from "../images/avatars/image-juliusomo.png";
 
-const InputBox = ({image, username, name, id}) => {
+const InputBox = ({ image, username, name, id }) => {
   const { comments, isReplyActive } = useSelector((store) => store.general);
-  const dispatch = useDispatch()
-  const [commentValue,setCommentValue] = useState("")
+  const dispatch = useDispatch();
+  const [commentValue, setCommentValue] = useState("");
   //
   const handleInputedComment = (com) => {
-    if (!isReplyActive){
+    const replies = [];
+    comments.forEach((c) => replies.push(c.replies));
+    const combinedComsAndReps = replies
+      .flat()
+      .concat(comments)
+      .sort((a, b) => a.id - b.id);
+    if (!isReplyActive) {
       const commentInfo = {
-        id: comments.length + 1,
+        id: combinedComsAndReps.length + 1,
         content: com,
         createdAt: "today", // placeholder
         score: 0,
@@ -24,13 +35,19 @@ const InputBox = ({image, username, name, id}) => {
       };
       dispatch(addNewComment(commentInfo));
     }
-  }
+  };
   //
   const handleReply = (com) => {
-    if (isReplyActive){
-      const currentCommentInfo = comments.find(c => c.id === id)
+    const replies = [];
+    comments.forEach((c) => replies.push(c.replies));
+    const combinedComsAndReps = replies
+      .flat()
+      .concat(comments)
+      .sort((a, b) => a.id - b.id);
+    if (isReplyActive) {
+      const currentCommentInfo = comments.find((c) => c.id === id);
       const replyInfo = {
-        id: currentCommentInfo.replies.length,
+        id: combinedComsAndReps.length + 1,
         content: com,
         createdAt: "today", // placeholder
         score: 0,
@@ -42,23 +59,23 @@ const InputBox = ({image, username, name, id}) => {
         isUserComment: true,
         isAReply: true,
       };
-      dispatch(addReply({replyInfo, id}))
+      dispatch(addReply({ replyInfo, id }));
     }
-  }
+  };
   //
   const handleReplyToUsername = () => {
-    if (isReplyActive){
+    if (isReplyActive) {
       const currentCommentInfo = comments.find((c) => c.id === id);
       // console.log(currentCommentInfo)
-      if (currentCommentInfo){
+      if (currentCommentInfo) {
         setCommentValue(`@${currentCommentInfo.user.username} `);
       }
     }
-  }
+  };
   //
   useEffect(() => {
-    handleReplyToUsername()
-  }, [isReplyActive])
+    handleReplyToUsername();
+  }, [isReplyActive]);
   //
   return (
     <section className="input-box">
@@ -86,9 +103,9 @@ const InputBox = ({image, username, name, id}) => {
           handleInputedComment(commentValue);
           handleReply(commentValue);
           setCommentValue("");
-          if (isReplyActive){
-            dispatch(toggleIsReplyActive())
-            dispatch(currActiveComment("reset"))
+          if (isReplyActive) {
+            dispatch(toggleIsReplyActive());
+            dispatch(currActiveComment("reset"));
           }
         }}
       >

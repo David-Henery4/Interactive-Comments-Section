@@ -20,9 +20,10 @@ const CommentBox = ({
   user,
   isCommentActive = false,
   isUserComment = false,
+  isReplyComment = false,
 }) => {
-  const [isEdit,setIsEdit] = useState(false)
-  const [editContent, setEditContent] = useState("")
+  const [isEdit, setIsEdit] = useState(false);
+  const [editContent, setEditContent] = useState("");
 
   const { currentUser, isReplyActive, comments } = useSelector(
     (store) => store.general
@@ -35,14 +36,15 @@ const CommentBox = ({
   };
   //
   const handleDelete = (id) => {
-    dispatch(deleteComment(id))
-  }
+    dispatch(deleteComment(id));
+  };
   //
   const handleEdit = (id) => {
-    setIsEdit(true) // MIGHT be toggle
-    setEditContent(content) //could add to useState directly
+    setIsEdit(true); // MIGHT be toggle
+    setEditContent(content);
+    //could add to useState directly
     // console.log(content)
-  }
+  };
   //
   // useEffect(() => {
 
@@ -134,23 +136,22 @@ const CommentBox = ({
             className="input-box__btn"
             onClick={() => {
               dispatch(editComment({ id, editContent }));
-              setEditContent("")
-              setIsEdit(false)
+              setEditContent("");
+              setIsEdit(false);
             }}
           >
             UPDATE
           </button>
         )}
       </div>
-      {/* MIGHT NOT NEED ISREPLYACTIVE, JUST ON ID */}
       {isCommentActive && isReplyActive && (
         <InputBox {...currentUser} name={"REPLY"} id={id} />
       )}
-      {/* {isEdit && <InputBox {...currentUser} name={"UPDATE"}/> } */}
-      {/* {replies && replies.length > 0 &&
+      {replies &&
+        replies.length > 0 &&
         replies.map((rep) => {
-          return <CommentBox key={rep.id} {...rep}/>;
-        })} */}
+          return <CommentBox key={rep.id} {...rep} isReplyComment={true} />;
+        })}
     </>
   );
 };

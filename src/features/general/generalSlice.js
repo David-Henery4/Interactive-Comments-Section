@@ -19,7 +19,6 @@ const generalSlice = createSlice({
     },
     deleteComment: (state, {payload}) => {
       const filteredComments = state.comments.filter(com => com.id !== payload)
-      console.log(filteredComments)
       state.comments = filteredComments
     },
     editComment: (state, {payload}) => {
