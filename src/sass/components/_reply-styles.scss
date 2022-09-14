@@ -1,3 +1,9 @@
-.reply{
-    
+.reply {
+  width: 92%;
+  padding: 1rem;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  background-color: $white;
+  gap: 1.5rem;
 }
