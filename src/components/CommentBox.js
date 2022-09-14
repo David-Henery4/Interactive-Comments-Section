@@ -52,7 +52,7 @@ const CommentBox = ({
   //
   return (
     <>
-      <div className="comment-box">
+      <div className={isReplyComment ? "comment-box reply" : "comment-box"}>
         <div className="comment-box-headers">
           <img
             src={require(`../images/avatars/${image.png}`)}
@@ -147,11 +147,13 @@ const CommentBox = ({
       {isCommentActive && isReplyActive && (
         <InputBox {...currentUser} name={"REPLY"} id={id} />
       )}
-      {replies &&
-        replies.length > 0 &&
-        replies.map((rep) => {
-          return <CommentBox key={rep.id} {...rep} isReplyComment={true} />;
-        })}
+      {replies && replies.length > 0 && (
+        <div className="replies-container">
+          {replies.map((rep) => {
+            return <CommentBox key={rep.id} {...rep} isReplyComment={true} />;
+          })}
+        </div>
+      )}
     </>
   );
 };

@@ -1,9 +1,13 @@
-.reply {
+.replies-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  border-left: 3px solid $lightGray;
   width: 92%;
-  padding: 1rem;
-  border-radius: 5px;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  background-color: $white;
-  gap: 1.5rem;
+  gap: 30px;
+}
+
+.reply {
+  width: 95%;
 }
