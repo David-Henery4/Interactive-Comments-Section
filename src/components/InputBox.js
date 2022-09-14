@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {addNewComment, toggleIsReplyActive, addReply} from "../features/general/generalSlice"
+import {addNewComment, toggleIsReplyActive, addReply, currActiveComment} from "../features/general/generalSlice"
 import user from "../images/avatars/image-juliusomo.png";
 
 const InputBox = ({image, username, name, id}) => {
@@ -43,6 +43,20 @@ const InputBox = ({image, username, name, id}) => {
     }
   }
   //
+  const handleReplyToUsername = () => {
+    if (isReplyActive){
+      const currentCommentInfo = comments.find((c) => c.id === id);
+      console.log(currentCommentInfo)
+      if (currentCommentInfo){
+        setCommentValue(`@${currentCommentInfo.user.username} `);
+      }
+    }
+  }
+  //
+  useEffect(() => {
+    handleReplyToUsername()
+  }, [isReplyActive])
+  //
   return (
     <section className="input-box">
       <div className="input-box-text-wrap">
@@ -69,6 +83,10 @@ const InputBox = ({image, username, name, id}) => {
           handleInputedComment(commentValue);
           handleReply(commentValue);
           setCommentValue("");
+          if (isReplyActive){
+            dispatch(toggleIsReplyActive())
+            dispatch(currActiveComment("reset"))
+          }
         }}
       >
         {name}

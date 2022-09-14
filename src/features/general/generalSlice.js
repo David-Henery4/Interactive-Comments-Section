@@ -7,7 +7,7 @@ const initialState = {
   currentUser: commentData.currentUser,
   comments: commentData.comments,
   isReplyActive: false,
-  isUserReply: false,
+  isActiveComment: false,
 };
 
 const generalSlice = createSlice({
@@ -19,8 +19,23 @@ const generalSlice = createSlice({
     },
     addReply: (state, { payload }) => {
       const { replyInfo, id } = payload;
-      console.log(replyInfo);
-      console.log(id); // WAS HERE
+      const replyedToComment = state.comments.find((c) => c.id === id)
+      replyedToComment.replies = [...replyedToComment.replies, replyInfo]
+    },
+    currActiveComment: (state, {payload}) => {
+      state.comments.forEach((c) => {
+        if (c.id === payload){
+          state.isActiveComment = !state.isActiveComment
+          c.isCommentActive = state.isActiveComment
+        }
+        if (c.id !== payload){
+          c.isCommentActive = false
+        }
+        if (payload === "reset"){
+          c.isCommentActive = false;
+          state.isActiveComment = false;
+        }
+      })
     },
     changeCommentScore: (state, { payload }) => {
       const selectedComment = state.comments.find(
@@ -47,6 +62,7 @@ export const {
   changeCommentScore,
   toggleIsReplyActive,
   addReply,
+  currActiveComment,
 } = generalSlice.actions;
 
 export default generalSlice.reducer;

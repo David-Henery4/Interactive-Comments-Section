@@ -3,13 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changeCommentScore,
   toggleIsReplyActive,
+  currActiveComment
 } from "../features/general/generalSlice";
 import InputBox from "./InputBox";
 import holderProfilePic from "../images/avatars/image-amyrobson.png";
 import { del, edit, minus, plus, reply } from "../images";
 
-const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
-  const [activeComment, setActiveComment] = useState(false);
+const CommentBox = ({
+  id,
+  content,
+  createdAt,
+  replies,
+  score,
+  user,
+  isCommentActive = false,
+}) => {
   const { currentUser, isReplyActive, comments } = useSelector(
     (store) => store.general
   );
@@ -19,18 +27,9 @@ const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
   const handleCommentVotes = (changeType) => {
     dispatch(changeCommentScore({ id, changeType }));
   };
-  const checkForActiveComment = (id) => {
-    const currentCommentUser = comments.find(c => c.id === id)
-    if(currentCommentUser.id === id){
-      setActiveComment(!activeComment);
-    }
-    if(currentCommentUser.id !== id){
-      setActiveComment(false)
-    }
-  };
   //
   // useEffect(() => {
-    
+
   // }, [])
   //
   return (
@@ -66,8 +65,8 @@ const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
         <div
           className="comment-box-reply"
           onClick={() => {
-            dispatch(toggleIsReplyActive())
-            checkForActiveComment(id)
+            dispatch(toggleIsReplyActive());
+            dispatch(currActiveComment(id));
           }}
         >
           <img
@@ -79,7 +78,9 @@ const CommentBox = ({ id, content, createdAt, replies, score, user }) => {
         </div>
       </div>
       {/* MIGHT NOT NEED ISREPLYACTIVE, JUST ON ID */}
-      {activeComment && isReplyActive && <InputBox {...currentUser} name={"REPLY"} id={id}/>}
+      {isCommentActive && isReplyActive && (
+        <InputBox {...currentUser} name={"REPLY"} id={id} />
+      )}
       {/* {replies && replies.length > 0 &&
         replies.map((rep) => {
           return <CommentBox key={rep.id} {...rep}/>;
