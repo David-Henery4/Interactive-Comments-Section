@@ -6,7 +6,9 @@ import {
   currActiveComment,
   deleteComment,
   editComment,
-  currActiveReply
+  currActiveReply,
+  editReply,
+  deleteReply
 } from "../features/general/generalSlice";
 import InputBox from "./InputBox";
 import holderProfilePic from "../images/avatars/image-amyrobson.png";
@@ -39,7 +41,12 @@ const CommentBox = ({
   };
   //
   const handleDelete = (id) => {
-    dispatch(deleteComment(id));
+    if(isAReply){
+      dispatch(deleteReply({id, parentUser}))
+    }
+    if(!isAReply){
+      dispatch(deleteComment(id));
+    }
   };
   //
   const handleEdit = (id) => {
@@ -150,7 +157,12 @@ const CommentBox = ({
             form="edit-comment"
             className="input-box__btn"
             onClick={() => {
-              dispatch(editComment({ id, editContent }));
+              if(isAReply){
+                dispatch(editReply({id, editContent, parentUser}))
+              }
+              if(!isAReply){
+                dispatch(editComment({ id, editContent }));
+              }
               setEditContent("");
               setIsEdit(false);
             }}

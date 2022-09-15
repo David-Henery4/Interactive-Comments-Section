@@ -25,7 +25,10 @@ const generalSlice = createSlice({
       state.comments = filteredComments;
     },
     deleteReply: (state, {payload}) => {
-      console.log(payload)
+      const {id, parentUser} = payload
+      const parentComment = state.comments.find((rep) => rep.user.username === parentUser)
+      const updatedReplies = parentComment.replies.filter((rep) => rep.id !== id)
+      parentComment.replies = updatedReplies
     },
     editComment: (state, { payload }) => {
       const { id, editContent } = payload;
@@ -33,7 +36,12 @@ const generalSlice = createSlice({
       editedComment.content = editContent;
     },
     editReply: (state, {payload}) => {
-      console.log(payload)
+      const parentComment = state.comments.find((com) => com.user.username === payload.parentUser)
+      parentComment.replies.forEach((rep) => {
+        if (rep.id === payload.id){
+          rep.content = payload.editContent;
+        }
+      })
     },
     addReply: (state, { payload }) => {
       const { replyInfo, id } = payload;
