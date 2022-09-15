@@ -8,7 +8,8 @@ import {
   editComment,
   currActiveReply,
   editReply,
-  deleteReply
+  deleteReply,
+  changeReplyScore,
 } from "../features/general/generalSlice";
 import InputBox from "./InputBox";
 import holderProfilePic from "../images/avatars/image-amyrobson.png";
@@ -37,14 +38,19 @@ const CommentBox = ({
   const [editContent, setEditContent] = useState("");
   //
   const handleCommentVotes = (changeType) => {
-    dispatch(changeCommentScore({ id, changeType }));
+    if (isReplyComment) {
+      dispatch(changeReplyScore({ id, changeType, parentUser }));
+    }
+    if (!isReplyComment) {
+      dispatch(changeCommentScore({ id, changeType }));
+    }
   };
   //
   const handleDelete = (id) => {
-    if(isAReply){
-      dispatch(deleteReply({id, parentUser}))
+    if (isAReply) {
+      dispatch(deleteReply({ id, parentUser }));
     }
-    if(!isAReply){
+    if (!isAReply) {
       dispatch(deleteComment(id));
     }
   };
@@ -157,10 +163,10 @@ const CommentBox = ({
             form="edit-comment"
             className="input-box__btn"
             onClick={() => {
-              if(isAReply){
-                dispatch(editReply({id, editContent, parentUser}))
+              if (isAReply) {
+                dispatch(editReply({ id, editContent, parentUser }));
               }
-              if(!isAReply){
+              if (!isAReply) {
                 dispatch(editComment({ id, editContent }));
               }
               setEditContent("");
@@ -183,6 +189,18 @@ const CommentBox = ({
       {replies && replies.length > 0 && (
         <div className="replies-container">
           {replies.map((rep) => {
+            if (currentUser.username === rep.user.username) {
+              return (
+                <CommentBox
+                  key={rep.id}
+                  {...rep}
+                  isReplyComment={true}
+                  parentUser={user.username}
+                  isUserComment = {true}
+                  isAReply={true}
+                />
+              );
+            }
             return (
               <CommentBox
                 key={rep.id}

@@ -86,20 +86,6 @@ const InputBox = ({
     }
   };
   //
-  // const handleReplyToUsername = () => {
-  //   if (isReplyActive) {
-  //     const currentCommentInfo = comments.find((c) => c.id === id);
-  //     // console.log(currentCommentInfo)
-  //     if (currentCommentInfo) {
-  //       setCommentValue(`${currentCommentInfo.user.username} `);
-  //     }
-  //   }
-  // };
-  // //
-  // useEffect(() => {
-  //   handleReplyToUsername();
-  // }, [isReplyActive]);
-  //
   return (
     <section className="input-box">
       <div className="input-box-text-wrap">

@@ -104,6 +104,19 @@ const generalSlice = createSlice({
         selectedComment.score = 0;
       }
     },
+    changeReplyScore: (state, {payload}) => {
+      const parentComment = state.comments.find((com) => com.user.username === payload.parentUser)
+      const currentReply = parentComment.replies.find((rep) => rep.id === payload.id)
+      if (payload.changeType === "inc"){
+        currentReply.score++
+      }
+      if (payload.changeType === "dec"){
+        currentReply.score--
+      }
+      if (currentReply.score < 0){
+        currentReply.score = 0
+      }
+    },
     toggleIsReplyActive: (state, { payload }) => {
       state.isReplyActive = !state.isReplyActive;
     },
@@ -121,7 +134,8 @@ export const {
   currActiveReply,
   addReplyToReply,
   deleteReply,
-  editReply
+  editReply,
+  changeReplyScore,
 } = generalSlice.actions;
 
 export default generalSlice.reducer;
