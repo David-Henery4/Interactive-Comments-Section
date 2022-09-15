@@ -5,7 +5,8 @@ import {
   toggleIsReplyActive,
   currActiveComment,
   deleteComment,
-  editComment
+  editComment,
+  currActiveReply
 } from "../features/general/generalSlice";
 import InputBox from "./InputBox";
 import holderProfilePic from "../images/avatars/image-amyrobson.png";
@@ -18,18 +19,20 @@ const CommentBox = ({
   replies,
   score,
   user,
+  replyingTo = "",
+  parentUser = "",
   isCommentActive = false,
   isUserComment = false,
   isReplyComment = false,
+  isAReply = false,
 }) => {
-  const [isEdit, setIsEdit] = useState(false);
-  const [editContent, setEditContent] = useState("");
-
   const { currentUser, isReplyActive, comments } = useSelector(
     (store) => store.general
   );
   const dispatch = useDispatch();
   const { image, username } = user;
+  const [isEdit, setIsEdit] = useState(false);
+  const [editContent, setEditContent] = useState("");
   //
   const handleCommentVotes = (changeType) => {
     dispatch(changeCommentScore({ id, changeType }));
@@ -41,11 +44,13 @@ const CommentBox = ({
   //
   const handleEdit = (id) => {
     setIsEdit(true); // MIGHT be toggle
-    setEditContent(content);
-    //could add to useState directly
-    // console.log(content)
+    setEditContent(content); // could add to useState directly
   };
   //
+  // const grabRepliesList = () => {
+  //   // comments.find((com) => )
+  // }
+  // //
   // useEffect(() => {
 
   // }, [])
@@ -82,7 +87,9 @@ const CommentBox = ({
               ></textarea>
             </div>
           ) : (
-            <p className="comment-box-comment__text">{content}</p>
+            <p className="comment-box-comment__text">
+              {isReplyComment ? `@${replyingTo} ${content}` : `${content}`}
+            </p>
           )}
         </div>
         <div className="comment-box-likes">
@@ -119,7 +126,15 @@ const CommentBox = ({
             className="comment-box-reply"
             onClick={() => {
               dispatch(toggleIsReplyActive());
-              dispatch(currActiveComment(id));
+              if (!isReplyComment) {
+                dispatch(currActiveComment(id));
+              }
+              if (isReplyComment) {
+                // was hee
+                dispatch(
+                  currActiveReply({ id, replyingTo, username, parentUser })
+                );
+              }
             }}
           >
             <img
@@ -145,12 +160,25 @@ const CommentBox = ({
         )}
       </div>
       {isCommentActive && isReplyActive && (
-        <InputBox {...currentUser} name={"REPLY"} id={id} />
+        <InputBox
+          {...currentUser}
+          name={"REPLY"}
+          id={id}
+          parentUser={parentUser}
+          replyingTo={user.username}
+        />
       )}
       {replies && replies.length > 0 && (
         <div className="replies-container">
           {replies.map((rep) => {
-            return <CommentBox key={rep.id} {...rep} isReplyComment={true} />;
+            return (
+              <CommentBox
+                key={rep.id}
+                {...rep}
+                isReplyComment={true}
+                parentUser={user.username}
+              />
+            );
           })}
         </div>
       )}

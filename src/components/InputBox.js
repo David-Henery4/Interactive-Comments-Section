@@ -5,13 +5,24 @@ import {
   toggleIsReplyActive,
   addReply,
   currActiveComment,
+  addReplyToReply,
 } from "../features/general/generalSlice";
 import user from "../images/avatars/image-juliusomo.png";
 
-const InputBox = ({ image, username, name, id }) => {
+const InputBox = ({
+  image,
+  username,
+  name,
+  id,
+  parentUser,
+  isReply,
+  replyingTo,
+}) => {
   const { comments, isReplyActive } = useSelector((store) => store.general);
   const dispatch = useDispatch();
   const [commentValue, setCommentValue] = useState("");
+  // console.log(parentUser);
+  // console.log(replyingTo);
   //
   const handleInputedComment = (com) => {
     const replies = [];
@@ -44,14 +55,21 @@ const InputBox = ({ image, username, name, id }) => {
       .flat()
       .concat(comments)
       .sort((a, b) => a.id - b.id);
+      let currentCommentInfo;
     if (isReplyActive) {
-      const currentCommentInfo = comments.find((c) => c.id === id);
+      if(!parentUser){
+        const currentInfo = comments.find((c) => c.id === id);
+        currentCommentInfo = currentInfo.user.username
+      }
+      if  (parentUser){
+        currentCommentInfo = replyingTo
+      }
       const replyInfo = {
         id: combinedComsAndReps.length + 1,
         content: com,
         createdAt: "today", // placeholder
         score: 0,
-        replyingTo: currentCommentInfo.user.username,
+        replyingTo: currentCommentInfo,
         user: {
           image,
           username,
@@ -59,23 +77,28 @@ const InputBox = ({ image, username, name, id }) => {
         isUserComment: true,
         isAReply: true,
       };
-      dispatch(addReply({ replyInfo, id }));
-    }
-  };
-  //
-  const handleReplyToUsername = () => {
-    if (isReplyActive) {
-      const currentCommentInfo = comments.find((c) => c.id === id);
-      // console.log(currentCommentInfo)
-      if (currentCommentInfo) {
-        setCommentValue(`@${currentCommentInfo.user.username} `);
+      if (!parentUser) {
+        dispatch(addReply({ replyInfo, id }));
+      }
+      if (parentUser) {
+        dispatch(addReplyToReply({ replyInfo, id, parentUser }));
       }
     }
   };
   //
-  useEffect(() => {
-    handleReplyToUsername();
-  }, [isReplyActive]);
+  // const handleReplyToUsername = () => {
+  //   if (isReplyActive) {
+  //     const currentCommentInfo = comments.find((c) => c.id === id);
+  //     // console.log(currentCommentInfo)
+  //     if (currentCommentInfo) {
+  //       setCommentValue(`${currentCommentInfo.user.username} `);
+  //     }
+  //   }
+  // };
+  // //
+  // useEffect(() => {
+  //   handleReplyToUsername();
+  // }, [isReplyActive]);
   //
   return (
     <section className="input-box">
