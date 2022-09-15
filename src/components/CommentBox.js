@@ -60,14 +60,6 @@ const CommentBox = ({
     setEditContent(content); // could add to useState directly
   };
   //
-  // const grabRepliesList = () => {
-  //   // comments.find((com) => )
-  // }
-  // //
-  // useEffect(() => {
-
-  // }, [])
-  //
   return (
     <>
       <div className={isReplyComment ? "comment-box reply" : "comment-box"}>
@@ -101,15 +93,23 @@ const CommentBox = ({
             </div>
           ) : (
             <p className="comment-box-comment__text">
-              {isReplyComment ? `@${replyingTo} ${content}` : `${content}`}
+              {isReplyComment ? (
+                <>
+                  <span className="comment-box-comment__reply-to">
+                    @{replyingTo.concat(" ")}
+                  </span>
+                  {content}
+                </>
+              ) : (
+                `${content}`
+              )}
             </p>
           )}
         </div>
         <div className="comment-box-likes">
           <button
             className="comment-box__plus"
-            onClick={() => handleCommentVotes("inc")}
-          >
+            onClick={() => handleCommentVotes("inc")}>
             <img className="comment-box__plus-icon" src={plus} alt="plus" />
           </button>
           <p className="comment-box__like-quantity">{score}</p>
@@ -196,7 +196,7 @@ const CommentBox = ({
                   {...rep}
                   isReplyComment={true}
                   parentUser={user.username}
-                  isUserComment = {true}
+                  isUserComment={true}
                   isAReply={true}
                 />
               );

@@ -41,6 +41,10 @@
       font-weight: $fontWeightLight;
       line-height: 18px;
     }
+    &__reply-to{
+      color: $moderateBlue;
+      font-weight: $fontWeightMedium;
+    }
   }
   
   // Likes box
