@@ -8,6 +8,15 @@
 
 html{
   font-size: 62.5%; // 1rem = 10px
+  @include respond (mob){
+    font-size: 68.7%; // 1rem ==11px
+  }
+  @include respond (tab){
+    font-size: 75%; // 1rem = 12px
+  }
+  @include respond (lap){ // 1rem = 13px
+    font-size: 81.25%;
+  }
 }
 
 body{

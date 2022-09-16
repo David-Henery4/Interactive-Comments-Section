@@ -12,8 +12,7 @@ import {
   changeReplyScore,
 } from "../features/general/generalSlice";
 import InputBox from "./InputBox";
-import holderProfilePic from "../images/avatars/image-amyrobson.png";
-import { del, edit, minus, plus, reply } from "../images";
+import {Delete, Edit, Minus, Plus, Reply} from "../images/svgs/index";
 
 const CommentBox = ({
   id,
@@ -36,14 +35,16 @@ const CommentBox = ({
   const { image, username } = user;
   const [isEdit, setIsEdit] = useState(false);
   const [editContent, setEditContent] = useState("");
+  const [voted,setVoted] = useState(false) // save to local storage
   //
-  const handleCommentVotes = (changeType) => {
+  const handleCommentVotes = (changeType, e) => {
     if (isReplyComment) {
       dispatch(changeReplyScore({ id, changeType, parentUser }));
     }
     if (!isReplyComment) {
       dispatch(changeCommentScore({ id, changeType }));
     }
+    setVoted(true)
   };
   //
   const handleDelete = (id) => {
@@ -109,15 +110,23 @@ const CommentBox = ({
         <div className="comment-box-likes">
           <button
             className="comment-box__plus"
-            onClick={() => handleCommentVotes("inc")}>
-            <img className="comment-box__plus-icon" src={plus} alt="plus" />
+            disabled={voted}
+            onClick={(e) => handleCommentVotes("inc", e)
+            }
+          >
+            <div className="comment-box__plus-icon">
+              <Plus />
+            </div>
           </button>
           <p className="comment-box__like-quantity">{score}</p>
           <button
             className="comment-box__minus"
+            disabled={voted}
             onClick={() => handleCommentVotes("dec")}
           >
-            <img src={minus} alt="minus" className="comment-box__minus-icon" />
+            <div className="comment-box__minus-icon">
+              <Minus />
+            </div>
           </button>
         </div>
         {isUserComment ? (
@@ -126,11 +135,11 @@ const CommentBox = ({
               className="comment-box-delete"
               onClick={() => handleDelete(id)}
             >
-              <img src={del} alt="delete-icon" />
+              <Delete />
               <p>Delete</p>
             </div>
             <div className="comment-box-edit" onClick={() => handleEdit(id)}>
-              <img src={edit} alt="edit-icon" />
+              <Edit />
               <p>Edit</p>
             </div>
           </div>
@@ -150,18 +159,14 @@ const CommentBox = ({
               }
             }}
           >
-            <img
-              src={reply}
-              alt="reply-icon"
-              className="comment-box-reply__icon"
-            />
+            <Reply className="comment-box-reply__icon" />
             <p className="comment-box-reply__text">Reply</p>
           </div>
         )}
         {isEdit && (
           <button
             form="edit-comment"
-            className="input-box__btn"
+            className="input-box__btn comment-box-edit__active-btn"
             onClick={() => {
               if (isAReply) {
                 dispatch(editReply({ id, editContent, parentUser }));

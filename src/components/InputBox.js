@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {toast} from "react-toastify";
 import {
   addNewComment,
   toggleIsReplyActive,
@@ -25,6 +26,10 @@ const InputBox = ({
   // console.log(replyingTo);
   //
   const handleInputedComment = (com) => {
+    if (!com.trim()) {
+      toast.error("Please enter a valid comment! :)")
+      return
+    }
     const replies = [];
     comments.forEach((c) => replies.push(c.replies));
     const combinedComsAndReps = replies
@@ -87,7 +92,7 @@ const InputBox = ({
   };
   //
   return (
-    <section className="input-box">
+    <section className={parentUser ? "input-box reply" : "input-box"}>
       <div className="input-box-text-wrap">
         <textarea
           name="comment"

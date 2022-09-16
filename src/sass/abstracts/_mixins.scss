@@ -1,0 +1,23 @@
+
+@mixin respond ($breakpoint) {
+    @if ($breakpoint == mob){
+        @media (min-width: 32.5em){ // 520px 
+            @content
+        }
+    };
+    @if ($breakpoint == tab){
+        @media (min-width: 40.62em){ // 650px // 780px  48.75em
+            @content
+        }
+    };
+    @if ($breakpoint == lap){
+        @media (min-width: 46.87em){ // 750px
+            @content
+        }
+    };
+    // @if ($breakpoint == lap){
+    //     @media (min-width: 56.25em){ // 900px 
+    //         @content
+    //     }
+    // };
+}
