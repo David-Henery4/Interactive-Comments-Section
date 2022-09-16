@@ -10,6 +10,7 @@ import {
   editReply,
   deleteReply,
   changeReplyScore,
+  toggleModalAndOverlay
 } from "../features/general/generalSlice";
 import InputBox from "./InputBox";
 import {Delete, Edit, Minus, Plus, Reply} from "../images/svgs/index";

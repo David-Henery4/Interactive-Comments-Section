@@ -1,0 +1,62 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  width: 28.8rem;
+  height: 20rem;
+  background-color: $white;
+  border-radius: 10px;
+  padding: 2rem;
+  display: none; // active flex
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  @include respond (tab){
+    width: 30rem;
+  }
+  &__title{
+    color: $darkBlue;
+    font-size: 1.7rem;
+    font-weight: $fontWeightMedium;
+  }
+  &__text{
+    font-size: 1.3rem;
+    line-height: 20px;
+    font-weight: $fontWeightLight;
+  }
+  &-btns{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__cancel,
+    &__delete{
+      background-color: transparent;
+      border: none;
+      border-radius: 5px;
+      padding: 1.1rem 1.9rem;
+      color: $white;
+      font-family: $fontFamily;
+      font-weight: $fontWeightMedium;
+      &:hover{
+        cursor: pointer;
+      }
+      @include respond (tab){
+        padding: 1.1rem 2.9rem;
+      }
+    }
+    &__cancel{
+      background-color: $grayishBlue;
+    }
+    &__delete{
+      background-color: $softRed;
+    }
+  }
+}
+
+.modal-active{
+  display: flex;
+}

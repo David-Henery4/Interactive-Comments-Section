@@ -6,7 +6,7 @@ import commentData from "../../data.json";
 const initialState = {
   currentUser: commentData.currentUser,
   comments: commentData.comments,
-  // replies: [],
+  isModalAndOverlayActive: false,
   isReplyActive: false,
   isActiveComment: false,
 };
@@ -120,6 +120,9 @@ const generalSlice = createSlice({
     toggleIsReplyActive: (state, { payload }) => {
       state.isReplyActive = !state.isReplyActive;
     },
+    toggleModalAndOverlay: (state) => {
+      state.isModalAndOverlayActive = !state.isModalAndOverlayActive
+    },
   },
 });
 
@@ -136,6 +139,7 @@ export const {
   deleteReply,
   editReply,
   changeReplyScore,
+  toggleModalAndOverlay,
 } = generalSlice.actions;
 
 export default generalSlice.reducer;

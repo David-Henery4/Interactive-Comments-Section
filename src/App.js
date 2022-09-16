@@ -1,11 +1,12 @@
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import MainContent from "./layout/MainContent";
-import amy from "./images/avatars/image-amyrobson.png";
+import {Overlay} from "./components";
 
 function App() {
   return (
     <div className="App app-layout">
+      <Overlay/>
       <MainContent />
       <ToastContainer
         position="top-center"
