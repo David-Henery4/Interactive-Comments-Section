@@ -22,6 +22,7 @@ const CommentBox = ({
   replies,
   score,
   user,
+  getInfoForDelete,
   replyingTo = "",
   parentUser = "",
   isCommentActive = false,
@@ -49,12 +50,7 @@ const CommentBox = ({
   };
   //
   const handleDelete = (id) => {
-    if (isAReply) {
-      dispatch(deleteReply({ id, parentUser }));
-    }
-    if (!isAReply) {
-      dispatch(deleteComment(id));
-    }
+    getInfoForDelete({id,parentUser,isAReply})
   };
   //
   const handleEdit = (id) => {
@@ -134,7 +130,11 @@ const CommentBox = ({
           <div className="comment-box-delEdit">
             <div
               className="comment-box-delete"
-              onClick={() => handleDelete(id)}
+              onClick={() => {
+                dispatch(toggleModalAndOverlay())
+                handleDelete(id)
+              }
+              }
             >
               <Delete />
               <p>Delete</p>
@@ -204,6 +204,7 @@ const CommentBox = ({
                   parentUser={user.username}
                   isUserComment={true}
                   isAReply={true}
+                  getInfoForDelete={getInfoForDelete}
                 />
               );
             }
@@ -213,6 +214,7 @@ const CommentBox = ({
                 {...rep}
                 isReplyComment={true}
                 parentUser={user.username}
+                getInfoForDelete={getInfoForDelete}
               />
             );
           })}

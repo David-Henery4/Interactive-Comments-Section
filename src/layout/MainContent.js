@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { CommentBox, InputBox, Modal } from "../components";
 
 const MainContent = () => {
   const { comments, currentUser } = useSelector((store) => store.general);
-  // HAVE FUNCTION HERE TO PASS INTO COMMENTS BOX, RECIEVES PARAMS, THEN PASS THEM AS PROPS INTO MODAL TO CALL THE DELETE.
-  // OR USE SEND THE PARAMS FROM COMMENT BOX DIRECTLY FROM COMMENT BOX INTO SLICE THEN USE "USE SELECTOR" to grab in the modal (TRY THIS LAST!!!!!!!!!)
+  const [delInfo,setDelInfo] = useState({})
+  //
+  const getInfoForDelete = (deleteInfo) => {
+    console.log(deleteInfo)
+    setDelInfo(deleteInfo)
+  }
+  //
   return (
     <main className="content-layout">
-      <Modal/>
+      <Modal {...delInfo}/>
       {comments.map((com) => {
-        return <CommentBox key={com.id} {...com} />;
+        return <CommentBox key={com.id} {...com} getInfoForDelete={getInfoForDelete}/>;
       })}
       <InputBox {...currentUser} name={"SEND"}/>
     </main>
