@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import commentData from "../../data.json";
 
 // console.log(commentData)
+// was  herer
 
 const initialState = {
   currentUser: commentData.currentUser,
@@ -24,37 +25,43 @@ const generalSlice = createSlice({
       );
       state.comments = filteredComments;
     },
-    deleteReply: (state, {payload}) => {
-      const {id, parentUser} = payload
-      const parentComment = state.comments.find((rep) => rep.user.username === parentUser)
-      const updatedReplies = parentComment.replies.filter((rep) => rep.id !== id)
-      parentComment.replies = updatedReplies
+    deleteReply: (state, { payload }) => {
+      const { id, parentUser } = payload;
+      const parentComment = state.comments.find(
+        (rep) => rep.user.username === parentUser
+      );
+      const updatedReplies = parentComment.replies.filter(
+        (rep) => rep.id !== id
+      );
+      parentComment.replies = updatedReplies;
     },
     editComment: (state, { payload }) => {
       const { id, editContent } = payload;
       const editedComment = state.comments.find((com) => com.id === id);
       editedComment.content = editContent;
     },
-    editReply: (state, {payload}) => {
-      const parentComment = state.comments.find((com) => com.user.username === payload.parentUser)
+    editReply: (state, { payload }) => {
+      const parentComment = state.comments.find(
+        (com) => com.user.username === payload.parentUser
+      );
       parentComment.replies.forEach((rep) => {
-        if (rep.id === payload.id){
+        if (rep.id === payload.id) {
           rep.content = payload.editContent;
         }
-      })
+      });
     },
     addReply: (state, { payload }) => {
       const { replyInfo, id } = payload;
       const replyedToComment = state.comments.find((c) => c.id === id);
       replyedToComment.replies = [...replyedToComment.replies, replyInfo];
     },
-    addReplyToReply: (state, {payload}) => {
-      console.log(payload)
+    addReplyToReply: (state, { payload }) => {
+      console.log(payload);
       const parentComment = state.comments.find(
         (com) => com.user.username === payload.parentUser
       );
-      const replies = parentComment.replies
-      parentComment.replies = [...replies, payload.replyInfo]
+      const replies = parentComment.replies;
+      parentComment.replies = [...replies, payload.replyInfo];
     },
     currActiveComment: (state, { payload }) => {
       state.comments.forEach((c) => {
@@ -104,24 +111,28 @@ const generalSlice = createSlice({
         selectedComment.score = 0;
       }
     },
-    changeReplyScore: (state, {payload}) => {
-      const parentComment = state.comments.find((com) => com.user.username === payload.parentUser)
-      const currentReply = parentComment.replies.find((rep) => rep.id === payload.id)
-      if (payload.changeType === "inc"){
-        currentReply.score++
+    changeReplyScore: (state, { payload }) => {
+      const parentComment = state.comments.find(
+        (com) => com.user.username === payload.parentUser
+      );
+      const currentReply = parentComment.replies.find(
+        (rep) => rep.id === payload.id
+      );
+      if (payload.changeType === "inc") {
+        currentReply.score++;
       }
-      if (payload.changeType === "dec"){
-        currentReply.score--
+      if (payload.changeType === "dec") {
+        currentReply.score--;
       }
-      if (currentReply.score < 0){
-        currentReply.score = 0
+      if (currentReply.score < 0) {
+        currentReply.score = 0;
       }
     },
     toggleIsReplyActive: (state, { payload }) => {
       state.isReplyActive = !state.isReplyActive;
     },
     toggleModalAndOverlay: (state) => {
-      state.isModalAndOverlayActive = !state.isModalAndOverlayActive
+      state.isModalAndOverlayActive = !state.isModalAndOverlayActive;
     },
   },
 });

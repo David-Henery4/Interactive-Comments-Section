@@ -1,8 +1,32 @@
 import { configureStore } from "@reduxjs/toolkit";
+import {persistStore, persistReducer} from "redux-persist";
+import storage from "redux-persist/lib/storage"; // LocalStorage
+import thunk from "redux-thunk";
 import generalReducer from "./features/general/generalSlice";
 
-export const store = configureStore({
-  reducer:{
-    general: generalReducer,
+// (without-persist)
+// export const store = configureStore({
+//   reducer:{
+//     general: generalReducer,
+//   },
+// });
+
+const persistConfig = {
+  key: "root",
+  storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, generalReducer)
+
+let store = configureStore({
+  reducer: {
+    general: persistedReducer,
   },
+  middleware: [thunk],
 });
+
+let persistor = persistStore(store)
+export {
+  store,
+  persistor
+}
