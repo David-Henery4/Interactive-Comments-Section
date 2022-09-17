@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { workingOutPostTime } from "../postTime/postTime";
 import {toast} from "react-toastify";
 import {
   addNewComment,
@@ -40,7 +41,7 @@ const InputBox = ({
       const commentInfo = {
         id: combinedComsAndReps.length + 1,
         content: com,
-        createdAt: "today", // placeholder
+        createdAt: "today", // placeholder // "today"
         score: 0,
         user: {
           image,
