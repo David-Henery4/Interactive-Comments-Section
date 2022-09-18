@@ -37,7 +37,7 @@ Users should be able to:
 
 (Solution to be Added)
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Solution URL: [Frontend-Mentor-Solution](https://www.frontendmentor.io/solutions/interactivecommentsreact-scss-reduxtoolkit-reduxpersist-grid-WoTN9q2Kay)
 - Live Site URL: [Comments-Interactive-Section](https://comments-interactive-section.netlify.app/)
 
 ## My process
