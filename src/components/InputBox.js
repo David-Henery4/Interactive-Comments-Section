@@ -79,7 +79,7 @@ const InputBox = ({
   };
   //
   return (
-    <section className={parentUser ? "input-box reply" : "input-box"}>
+    <div className={parentUser ? "input-box reply" : "input-box"}>
       <div className="input-box-text-wrap">
         <textarea
           name="comment"
@@ -98,7 +98,6 @@ const InputBox = ({
         />
       </div>
       <button
-        form="comment"
         className="input-box__btn"
         onClick={() => {
           handleInputedComment(commentValue);
@@ -112,7 +111,7 @@ const InputBox = ({
       >
         {name}
       </button>
-    </section>
+    </div>
   );
 };
 

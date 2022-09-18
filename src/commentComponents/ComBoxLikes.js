@@ -5,7 +5,7 @@ const ComBoxLikes = ({likes}) => {
   const {voted,handleCommentVotes,score} = likes
   return (
     <div className="comment-box-likes">
-      <i
+      <div
         className="comment-box__plus"
         disabled={voted}
         onClick={(e) => handleCommentVotes("inc", e)}
@@ -13,9 +13,9 @@ const ComBoxLikes = ({likes}) => {
         <div className="comment-box__plus-icon">
           <Plus />
         </div>
-      </i>
+      </div>
       <p className="comment-box__like-quantity">{score}</p>
-      <i
+      <div
         className="comment-box__minus"
         disabled={voted}
         onClick={() => handleCommentVotes("dec")}
@@ -23,7 +23,7 @@ const ComBoxLikes = ({likes}) => {
         <div className="comment-box__minus-icon">
           <Minus />
         </div>
-      </i>
+      </div>
     </div>
   );
 };
