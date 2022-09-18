@@ -1,12 +1,12 @@
-// workingOutPostTime(temp)
+
 export function workingOutPostTime(postTime) {
   const currentTime = +new Date();
   const compareStamps = currentTime - postTime;
   const stampToDateCurr = new Date(currentTime);
   const StampToDatePost = new Date(postTime);
 
+  // Formula
   const formulaForYears = stampToDateCurr.getFullYear() - StampToDatePost.getFullYear();
-  console.log(formulaForYears)
   const formulaForMonths =
     stampToDateCurr.getMonth() -
     StampToDatePost.getMonth() +
@@ -52,19 +52,19 @@ export function workingOutPostTime(postTime) {
   if (formulaForDays >= 21 && formulaForDays < 28) {
     return "3 Weeks Ago";
   }
+  
+  // MONTHS
   if (formulaForDays >= 28 && formulaForDays < 35) {
     return "1 Month Ago";
   }
-
-  // MONTHS
   if (formulaForMonths > 1 && formulaForMonths < 12) {
     return `${formulaForMonths} Months ago`;
   }
 
+  // YEARS
   if (formulaForMonths >= 12 && formulaForYears === 1){
     return "1 Year ago"
   }
-
   if (formulaForYears > 1){
     return `${formulaForYears} Years ago`
   }

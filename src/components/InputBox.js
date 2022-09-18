@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { workingOutPostTime } from "../postTime/postTime";
 import {toast} from "react-toastify";
 import {
   addNewComment,
@@ -9,7 +8,7 @@ import {
   currActiveComment,
   addReplyToReply,
 } from "../features/general/generalSlice";
-import user from "../images/avatars/image-juliusomo.png";
+
 
 const InputBox = ({
   image,
@@ -20,28 +19,21 @@ const InputBox = ({
   isReply,
   replyingTo,
 }) => {
+  //
   const { comments, isReplyActive } = useSelector((store) => store.general);
   const dispatch = useDispatch();
   const [commentValue, setCommentValue] = useState("");
-  // console.log(parentUser);
-  // console.log(replyingTo);
   //
   const handleInputedComment = (com) => {
     if (!com.trim()) {
       toast.error("Please enter a valid comment! :)")
       return
     }
-    const replies = [];
-    comments.forEach((c) => replies.push(c.replies));
-    const combinedComsAndReps = replies
-      .flat()
-      .concat(comments)
-      .sort((a, b) => a.id - b.id);
     if (!isReplyActive) {
       const commentInfo = {
-        id: combinedComsAndReps.length + 1,
+        id: +new Date(),
         content: com,
-        createdAt: +new Date(), // placeholder // "today"
+        createdAt: +new Date(),
         score: 0,
         user: {
           image,
@@ -55,12 +47,6 @@ const InputBox = ({
   };
   //
   const handleReply = (com) => {
-    const replies = [];
-    comments.forEach((c) => replies.push(c.replies));
-    const combinedComsAndReps = replies
-      .flat()
-      .concat(comments)
-      .sort((a, b) => a.id - b.id);
       let currentCommentInfo;
     if (isReplyActive) {
       if(!parentUser){
@@ -71,9 +57,9 @@ const InputBox = ({
         currentCommentInfo = replyingTo
       }
       const replyInfo = {
-        id: combinedComsAndReps.length + 1,
+        id: +new Date(),
         content: com,
-        createdAt: +new Date(), // placeholder
+        createdAt: +new Date(),
         score: 0,
         replyingTo: currentCommentInfo,
         user: {

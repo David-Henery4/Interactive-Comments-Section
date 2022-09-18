@@ -2,9 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import commentData from "../../data/commentData"; 
 // import commentData from "../../data.json";
 
-// console.log(commentData)
-// was  herer
-
 const initialState = {
   currentUser: commentData.currentUser,
   comments: commentData.comments,

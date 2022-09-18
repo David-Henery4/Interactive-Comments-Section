@@ -7,7 +7,6 @@ const MainContent = () => {
   const [delInfo,setDelInfo] = useState({})
   //
   const getInfoForDelete = (deleteInfo) => {
-    console.log(deleteInfo)
     setDelInfo(deleteInfo)
   }
   //
