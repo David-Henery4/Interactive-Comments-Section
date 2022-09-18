@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import commentData from "../../data.json";
+import commentData from "../../data/commentData"; 
+// import commentData from "../../data.json";
 
 // console.log(commentData)
 // was  herer

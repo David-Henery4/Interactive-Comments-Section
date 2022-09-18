@@ -13,6 +13,7 @@ import {
   toggleModalAndOverlay
 } from "../features/general/generalSlice";
 import InputBox from "./InputBox";
+import { workingOutPostTime } from "../postTime/postTime";
 import {Delete, Edit, Minus, Plus, Reply} from "../images/svgs/index";
 
 const CommentBox = ({
@@ -58,6 +59,13 @@ const CommentBox = ({
     setEditContent(content); // could add to useState directly
   };
   //
+  const test = () => {
+    const compare = createdAt - +new Date()
+    const hours = (compare / (1000 * 60 * 60))
+    console.log(hours)
+  }
+  test()
+  //
   return (
     <>
       <div className={isReplyComment ? "comment-box reply" : "comment-box"}>
@@ -73,7 +81,7 @@ const CommentBox = ({
               <p>You</p>
             </div>
           )}
-          <p className="comment-box__post-date">{createdAt}</p>
+          <p className="comment-box__post-date">{workingOutPostTime(createdAt)}</p>
         </div>
         <div className="comment-box-comment">
           {isEdit ? (

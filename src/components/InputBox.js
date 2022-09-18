@@ -41,7 +41,7 @@ const InputBox = ({
       const commentInfo = {
         id: combinedComsAndReps.length + 1,
         content: com,
-        createdAt: "today", // placeholder // "today"
+        createdAt: +new Date(), // placeholder // "today"
         score: 0,
         user: {
           image,
@@ -73,7 +73,7 @@ const InputBox = ({
       const replyInfo = {
         id: combinedComsAndReps.length + 1,
         content: com,
-        createdAt: "today", // placeholder
+        createdAt: +new Date(), // placeholder
         score: 0,
         replyingTo: currentCommentInfo,
         user: {
