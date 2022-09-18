@@ -2,7 +2,7 @@ import React from "react";
 
 const Attribution = () => {
   return (
-    <div className="attribution">
+    <footer className="attribution">
       Challenge by{" "}
       <a
         href="https://www.frontendmentor.io?ref=challenge"
@@ -12,7 +12,7 @@ const Attribution = () => {
         Frontend Mentor
       </a>
       . Coded by <a href="https://www.djhwebdevelopment.com">David Henery</a>.
-    </div>
+    </footer>
   );
 };
 
