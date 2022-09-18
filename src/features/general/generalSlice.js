@@ -77,7 +77,6 @@ const generalSlice = createSlice({
       });
     },
     currActiveReply: (state, { payload }) => {
-      console.log(payload);
       const parentComment = state.comments.find(
         (com) => com.user.username === payload.parentUser
       );
@@ -126,7 +125,7 @@ const generalSlice = createSlice({
         currentReply.score = 0;
       }
     },
-    toggleIsReplyActive: (state, { payload }) => {
+    toggleIsReplyActive: (state) => {
       state.isReplyActive = !state.isReplyActive;
     },
     toggleModalAndOverlay: (state) => {

@@ -14,9 +14,6 @@ html{
   @include respond (tab){
     font-size: 75%; // 1rem = 12px
   }
-  @include respond (lap){ // 1rem = 13px
-    font-size: 81.25%;
-  }
 }
 
 body{

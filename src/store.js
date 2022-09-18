@@ -22,7 +22,7 @@ let store = configureStore({
   reducer: {
     general: persistedReducer,
   },
-  middleware: [thunk],
+  middleware: [thunk], // needed for non-serialized values.
 });
 
 let persistor = persistStore(store)

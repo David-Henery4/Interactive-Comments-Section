@@ -1,6 +1,6 @@
 # Frontend Mentor - Interactive comments section solution
 
-This is a solution to the [Interactive comments section challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
+This is a solution to the [Interactive comments section challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
 ## Table of contents
 
@@ -14,7 +14,7 @@ This is a solution to the [Interactive comments section challenge on Frontend Me
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Author](#author)
-- [Acknowledgments](#acknowledgments)
+
 
 ## Overview
 
@@ -33,15 +33,9 @@ Users should be able to:
 
 ![comments-desktop-gif](./readme-image/comments-desktop.gif)
 
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
-
 ### Links
+
+(Links to be Added)
 
 - Solution URL: [Add solution URL here](https://your-solution-url.com)
 - Live Site URL: [Add live site URL here](https://your-live-site-url.com)
@@ -51,63 +45,109 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 ### Built with
 
 - Semantic HTML5 markup
-- CSS custom properties
+- CSS/SASS (Variables & Mixins)
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
 - [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+- [React-Redux-Toolkit](https://nextjs.org/) - State Management Library
+- [Redux-Persist](https://styled-components.com/) - State Persist in storage.
+- [React-Toastify]() - UI Notification library
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+One of the main things I learn't from this project was how to use reusable components in react and how they work. I had used them in projects before but in this project I challenged myself to only use two main components for the project. One for the comments, then reused for displaying the replies. Another for the Comment Input, which was also used for the reply input. After playing around with these for a while, It finally clicked for me when I used the "CommentBox" component inside itself to display the replies, this led me to getting out of the mind set of treating the same component as the one component but completly seperate individual compenents which can be changed on there own, even though they are the same.
 
-To see how you can add code snippets, see below:
+This then led me to learn that to create truly reusable components that props are the key. Using props allowed me to create different layouts and functionality within those components based on the props. I would insert and use different props into the components at different places thoughout the code, in order to change the compentent under a specific condition when needed. For Instance when I used the "CommentBox" Component for a reply, instead of a main comment, I would insert a prop "isReply" which was set to true and based on this I was able to manipulate the styles and functionality in order to match what I needed the component to do for the reply.
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
-```
+This kind of led to a type of loop, in this case, because I had a "commentBox" inside the main "commentBox" component and when I inserted the prop into the child component I then had to handle the prop though the parameters in the parent component. It can be confusing to follow the flow when used like this, but this has led me to having a much better understanding of reusable components and how powerfull then can be, and I feel I'm only scratching the surface of what reusable components can really do.
+
+Heres a basic example of using props to change components, here Im using the same button component but changing the text when needed:
+
 ```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
+<InputBox {...currentUser} name={"SEND"}/>
+
+<InputBox {...currentUser} name={"REPLY"} id={id} parentUser={parentUser} replyingTo={user.username}/>
+//
+const InputBox = ({
+  name,
+  parentUser,
+}) => {
+  return (
+    <section className={parentUser ? "input-box reply" : "input-box"}>
+      <button
+        form="comment"
+        className="input-box__btn">
+        {name}
+      </button>
+    </section>
+  );
 }
 ```
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+I also used "Redux-Persist" for the first time, this allowed me to store the state data, from the redux-toolkit state, to the local storage in a simple way. The main use of this is so the state data from the redux-toolkit can persist thoughout multiple refreshes.
+If you want to know more, you can check out the docs here: [Redux-Persist](https://github.com/rt2zz/redux-persist)
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+Heres a quick example, we first set up the redux-persist in the store.
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // LocalStorage
+import thunk from "redux-thunk";
+import generalReducer from "./features/general/generalSlice";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, generalReducer);
+
+let store = configureStore({
+  reducer: {
+    general: persistedReducer,
+  },
+  middleware: [thunk], // needed for non-serialized values.
+});
+
+let persistor = persistStore(store);
+export { store, persistor };
+```
+
+
+We import the store & persistor, then wrap our application in the PersistGate and pass in the store data.
+```js
+import { store, persistor } from "./store";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+//
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>
+);
+```
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
+I will definitly be using Redux-Persist on small projects in the future, where I'm using redux-toolkit and localStorage because it makes it alot easier to persist the data of refeshed.
 
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+Also in future projects I will be taking what I learned about reusable components and apply them to future projects, because I feel they can be a very powerfull tool when it comes to building different segments of UI.
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
+- [Redux-Persist Docs](https://github.com/rt2zz/redux-persist) - If you want to check out more on this, check out there documentation.
+- [Bobby-Hadz-Blog](https://bobbyhadz.com/blog/javascript-get-number-of-months-between-two-dates) - When creating the formula for the post times for the comments, I had to research how to get the amount of months between dates, which lead me to this blog posting by Bobby Hadz for reference, which was a great help for me. 
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
+- Website - [David Henery](https://www.djhwebdevelopment.com)
+- Frontend Mentor - [@David-Henery4](https://www.frontendmentor.io/profile/David-Henery4)
+- LinkedIn - [David Henery](https://www.linkedin.com/in/david-henery-725458241)
 
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
-
-## Acknowledgments
-
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**

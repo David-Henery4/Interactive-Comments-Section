@@ -16,8 +16,6 @@
     align-items: center;
     gap: 1.5rem;
     @include respond (tab){
-      // justify-self: flex-start;
-      // align-self: flex-start;
       grid-column: 2/10;
     }
   }
@@ -104,12 +102,6 @@
       }
     }
   }
-  &__plus {
-    &-icon {
-      svg {
-      }
-    }
-  }
   &__like-quantity {
     color: $moderateBlue;
     font-weight: $fontWeightMedium;
@@ -118,8 +110,6 @@
   &__minus {
     position: relative;
     top: .5px;
-    &-icon {
-    }
   }
 
   // Reply Styles
@@ -130,9 +120,8 @@
     justify-content: flex-end;
     align-items: center;
     gap: 5px;
-        @include respond (tab){
+      @include respond (tab){
       grid-row: 1/2;
-      // align-self: flex-start;
     }
     &:hover{
       cursor: pointer;

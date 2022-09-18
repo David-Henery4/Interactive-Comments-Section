@@ -6,13 +6,8 @@
         }
     };
     @if ($breakpoint == tab){
-        @media (min-width: 40.62em){ // 650px // 780px  48.75em
+        @media (min-width: 40.62em){ // 650px 
             @content
         }
     };
-    // @if ($breakpoint == lap){
-    //     @media (min-width: 46.87em){ // 750px
-    //         @content
-    //     }
-    // };
 }
